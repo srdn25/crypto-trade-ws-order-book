@@ -1,28 +1,27 @@
-const fs = require('fs');
 const WebSocket = require('ws');
 const { createClient } = require('graphql-ws');
 const getHighAndLowBids = require('./src/action/getHighAndLowBids');
+const FileWorker = require('./src/service/fileWorker');
 
 const wsClient = createClient({
     webSocketImpl: WebSocket,
     url: 'wss://vakotrade.cryptosrvc-dev.com/graphql',
 });
 
-const monitoringCurrency = new Map([
-    ['BTCUSD', null],
-]);
+const fileWorker = new FileWorker([ 'BTCUSD' ]);
 
 async function execute (payload) {
     const onNext = (data) => {
         console.log('GET message');
         const orderBook = data?.data?.orderbook;
         if (orderBook) {
-            getHighAndLowBids(orderBook, monitoringCurrency);
+            getHighAndLowBids(orderBook, fileWorker);
         }
     };
 
     let unsubscribe = () => {
         console.log('Close connection');
+        fileWorker.closeFileStreamList();
     };
 
     return new Promise((resolve, reject) => {
@@ -39,13 +38,7 @@ async function execute (payload) {
 
 (async () => {
     try {
-        monitoringCurrency.forEach((value, key) => {
-            const stream = fs.createWriteStream(`./logs/${key}.txt`, {
-                flags: 'a',
-            });
-            monitoringCurrency.set(key, stream);
-        });
-
+        fileWorker.createFileWriteStreamList();
         console.log('Created write streams for write to files');
 
         await execute({
@@ -56,10 +49,6 @@ async function execute (payload) {
         });
     } catch (error) {
         console.log(error);
-
-        monitoringCurrency.forEach((value, key) => {
-            const stream = monitoringCurrency.get(key);
-            stream.end;
-        });
+        fileWorker.closeFileStreamList();
     }
 })();

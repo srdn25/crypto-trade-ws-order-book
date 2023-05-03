@@ -8,7 +8,7 @@ const findBestPrice = (arr, type) => {
                 result = price;
             }
         } else if (type === 'buy') {
-            if (price < result) {
+            if (price > result) {
                 result = price;
             }
         } else {
