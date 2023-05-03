@@ -1,0 +1,32 @@
+{
+  "name": "ws-order-book",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "18.14.x"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/srdn25/crypto-trade-ws-order-book.git"
+  },
+  "keywords": [
+    "node",
+    "crypto",
+    "websocket"
+  ],
+  "author": "Denis Sorokin",
+  "license": "SEE LICENCE IN LICENCE",
+  "bugs": {
+    "url": "https://github.com/srdn25/crypto-trade-ws-order-book/issues"
+  },
+  "homepage": "https://github.com/srdn25/crypto-trade-ws-order-book#readme",
+  "dependencies": {
+    "graphql-ws": "^5.12.1",
+    "ws": "^8.13.0"
+  }
+}

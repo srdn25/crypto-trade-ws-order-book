@@ -14,5 +14,5 @@ module.exports = ({ buy, sell, instrument_id }, streamList) => {
     const bestSell = findBestPrice(sell, 'sell');
     const bestBuy = findBestPrice(buy, 'buy');
 
-    stream.write(`[${new Date()}]: Buy - ${bestBuy}, Sell = ${bestSell}`);
+    stream.write(`[${new Date()}]: Buy - ${bestBuy}, Sell = ${bestSell}\n`, 'utf-8');
 }

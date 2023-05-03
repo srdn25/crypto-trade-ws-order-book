@@ -1,36 +1,65 @@
 const fs = require('fs');
 const WebSocket = require('ws');
+const { createClient } = require('graphql-ws');
 const getHighAndLowBids = require('./src/action/getHighAndLowBids');
 
-const wsClient = new WebSocket('wss://vakotrade.cryptosrvc-dev.com/graphql');
+const wsClient = createClient({
+    webSocketImpl: WebSocket,
+    url: 'wss://vakotrade.cryptosrvc-dev.com/graphql',
+});
 
 const monitoringCurrency = new Map([
     ['BTCUSD', null],
 ]);
 
-wsClient.on('error', (error) => {
-    monitoringCurrency.forEach((value, key) => {
-        const stream = monitoringCurrency.get(key);
-        stream.end;
+async function execute (payload) {
+    const onNext = (data) => {
+        console.log('GET message');
+        const orderBook = data?.data?.orderbook;
+        if (orderBook) {
+            getHighAndLowBids(orderBook, monitoringCurrency);
+        }
+    };
+
+    let unsubscribe = () => {
+        console.log('Close connection');
+    };
+
+    return new Promise((resolve, reject) => {
+        unsubscribe = wsClient.subscribe(
+            payload,
+            {
+                next: onNext,
+                error: reject,
+                complete: resolve,
+            },
+        );
     });
+}
 
-    console.log(error);
-});
+(async () => {
+    try {
+        monitoringCurrency.forEach((value, key) => {
+            const stream = fs.createWriteStream(`./logs/${key}.txt`, {
+                flags: 'a',
+            });
+            monitoringCurrency.set(key, stream);
+        });
 
-wsClient.on('open', function open() {
-    console.log('Connected to webSocket');
+        console.log('Created write streams for write to files');
 
-    monitoringCurrency.forEach((value, key) => {
-        const stream = fs.createWriteStream(`./logs/${key}`);
-        monitoringCurrency.set(key, stream);
-    });
+        await execute({
+            query: 'subscription ($instrument_id: String!) {orderbook (instrument_id: $instrument_id) {instrument_id, buy { quantity, price }, sell { quantity, price }}}',
+            variables: {
+                instrument_id: 'BTCUSD',
+            }
+        });
+    } catch (error) {
+        console.log(error);
 
-    console.log('Created write streams for write to files');
-});
-
-wsClient.on('message', function message(data) {
-    const orderBook = data.payload?.data?.orderbook;
-    if (orderBook) {
-        getHighAndLowBids(orderBook, monitoringCurrency);
+        monitoringCurrency.forEach((value, key) => {
+            const stream = monitoringCurrency.get(key);
+            stream.end;
+        });
     }
-});
+})();
