@@ -106,11 +106,9 @@ Example message from websocket
 ---
 Example output from BTCUSD.txt
 ```
-[Tue May 02 2023 20:56:57 GMT-0300 (Atlantic Daylight Time)]: Buy - 0.089032, Sell = 28838.22
-[Tue May 02 2023 20:56:58 GMT-0300 (Atlantic Daylight Time)]: Buy - 0.089032, Sell = 28837.82
-[Tue May 02 2023 20:56:59 GMT-0300 (Atlantic Daylight Time)]: Buy - 0.089032, Sell = 28838.32
-[Tue May 02 2023 20:57:00 GMT-0300 (Atlantic Daylight Time)]: Buy - 0.089032, Sell = 28837.92
-[Tue May 02 2023 20:57:01 GMT-0300 (Atlantic Daylight Time)]: Buy - 0.089032, Sell = 28838.04
-[Tue May 02 2023 20:57:02 GMT-0300 (Atlantic Daylight Time)]: Buy - 0.089032, Sell = 28838.04
-[Tue May 02 2023 20:57:03 GMT-0300 (Atlantic Daylight Time)]: Buy - 0.089032, Sell = 28838.04
+[Wed May 03 2023 20:27:54 GMT-0300 (Atlantic Daylight Time)]: Buy - 28705.07, Sell = 29286.23
+[Wed May 03 2023 20:27:55 GMT-0300 (Atlantic Daylight Time)]: Buy - 28705.09, Sell = 29287.55
+[Wed May 03 2023 20:27:56 GMT-0300 (Atlantic Daylight Time)]: Buy - 28701.3, Sell = 29283.82
+[Wed May 03 2023 20:27:57 GMT-0300 (Atlantic Daylight Time)]: Buy - 28701.41, Sell = 29284.78
+[Wed May 03 2023 20:27:58 GMT-0300 (Atlantic Daylight Time)]: Buy - 28699.71, Sell = 29284.58
 ```
